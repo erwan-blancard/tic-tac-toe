@@ -1,3 +1,6 @@
+from ia import ia
+from random import *
+
 symbols = "X○"
 DRAW = 0
 P1_VICTORY = 1
@@ -6,35 +9,47 @@ P2_VICTORY = 2
 def startgame():
     board = [0] * 9
     current_turn = 0
-    # 0 is DRAW, 1 is P1 VICTORY, 2 is P2 VICTORY
     end_type = 0
     finished = False
-    player_input = 0
+
+    isAI_input = input("Voulez vous jouer contre l'IA ? (O/N) ")
+    isAI = isAI_input.lower() == "y" or isAI_input.lower() == "o"
+    if isAI:
+        # selects who plays first if an AI plays
+        AI_turn_index = randint(0, 1)
 
     while not finished:
         drawboard(board)
-        print("Au JOUEUR", (current_turn % 2) + 1, "de jouer !")
-        print("Entrez le numéro de la case où vous souhaitez jouer:", end=" ")
 
-        input_satisfying = False
-        while not input_satisfying:
-            player_input = input()
-
-            # checks if player_input can be converted to an integer
-            try:
-                player_input = int(player_input)
-            except:
-                #drawboard(board)
-                print("Entrée invalide ! Entrez le numéro de la case où vous souhaitez jouer:", end=" ")
-                continue
-
-            if is_input_satisfying(board, player_input):
-                # fills the corresponding tile
-                board[player_input - 1] = (current_turn % 2) + 1
-                input_satisfying = True
+        if isAI and (current_turn % 2) == AI_turn_index:
+            print("Au JOUEUR", (current_turn % 2) + 1, "(IA) de jouer !")
+            AI_input = ia(board, symbols[current_turn % 2])
+            # if an error is thrown by function (returns False), exit with error code 1
+            if type(AI_input) == bool:
+                print("L'IA n'est pas parvenue à jouer pour ce tour...")
+                exit(1)
             else:
-                #drawboard(board)
-                print("Case invalide ! Entrez le numéro de la case où vous souhaitez jouer:", end=" ")
+                board[AI_input] = (current_turn % 2) + 1
+        else:
+            print("Au JOUEUR", (current_turn % 2) + 1, "de jouer !")
+            print("Entrez le numéro de la case où vous souhaitez jouer:", end=" ")
+            input_satisfying = False
+            while not input_satisfying:
+                player_input = input()
+
+                # checks if player_input can be converted to an integer, and if not loops back to input()
+                try:
+                    player_input = int(player_input)
+                except:
+                    print("Entrée invalide ! Entrez le numéro de la case où vous souhaitez jouer:", end=" ")
+                    continue
+
+                if is_input_satisfying(board, player_input):
+                    # fills the corresponding tile
+                    board[player_input - 1] = (current_turn % 2) + 1
+                    input_satisfying = True
+                else:
+                    print("Case invalide ! Entrez le numéro de la case où vous souhaitez jouer:", end=" ")
 
         current_turn += 1
         if current_turn > 4:
