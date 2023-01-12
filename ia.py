@@ -72,3 +72,4 @@ def checkdiag(board, board_index, player_symbol_index):
     elif board_index == 8:
         if board[2] == player_symbol_index and board[4] == player_symbol_index:
             return True
+    return False

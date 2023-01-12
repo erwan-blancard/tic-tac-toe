@@ -89,7 +89,6 @@ def checkrow(board, board_index, player_symbol_index):
         if board[board_index - 2] == player_symbol_index and board[board_index - 1] == player_symbol_index:
             return True
     return False
-
 def checkcol(board, board_index, player_symbol_index):
     if 0 <= board_index <= 2:
         if board[board_index + 3] == player_symbol_index and board[board_index + 6] == player_symbol_index:
@@ -100,9 +99,7 @@ def checkcol(board, board_index, player_symbol_index):
     elif 6 <= board_index <= 8:
         if board[board_index - 6] == player_symbol_index and board[board_index - 3] == player_symbol_index:
             return True
-
     return False
-
 def checkdiag(board, board_index, player_symbol_index):
     if board_index == 0:
         if board[4] == player_symbol_index and board[8] == player_symbol_index:
@@ -119,6 +116,7 @@ def checkdiag(board, board_index, player_symbol_index):
     elif board_index == 8:
         if board[2] == player_symbol_index and board[4] == player_symbol_index:
             return True
+    return False
 
 def P1_wins(board):
     i = 0
